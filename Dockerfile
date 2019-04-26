@@ -63,8 +63,8 @@ RUN set -xe; \
         libmemcached11 \
         libmcrypt4 \
         libpng16-16 \
-        librdkafka1 \
-        libuuid1 \
+        #librdkafka1 \
+        #libuuid1 \
         #libwebp6 \
         libxml2 \
         #libxslt1.1 \
@@ -101,10 +101,13 @@ RUN set -xe; \
         libmagickwand-dev \
         libmagickcore-dev \
         libmcrypt-dev \
+        libmemcached-dev \
         librabbitmq-dev \
+        librdkafka-dev \
         libtidy-dev \
-        libxml2-dev \
+        uuid-dev \
         libwebp-dev \
+        libxml2-dev \
         libxslt1-dev \
         libyaml-dev \
         libzip-dev; \
@@ -181,7 +184,7 @@ RUN set -xe; \
         memcached \
         mongodb \
         oauth \
-        redis \
+        #redis \
         rdkafka \
         uuid \
         xdebug \
