@@ -37,60 +37,86 @@ RUN set -xe; \
     adduser wodby www-data; \
     sed -i '/^wodby/s/!/*/' /etc/shadow; \
     \
+    # Debian packages
     apt-get update; \
     apt-get install -y --no-install-recommends \
-      apt-transport-https \
-      autoconf \
-      cmake \
-      fcgiwrap \
-      findutils \
-      git \
-      gnupg \
-      imagemagick \
-      less \
-      libbz2-1.0 \
-      libbz2-dev \
-      libc-client2007e \
-      libc-client-dev \
-      libevent-2.0-5 \
-      libfreetype6 \
-      libgmp10 \
-      libgmp-dev \
-      libicu57 \
-      libjpeg62-turbo \
-      libkrb5-dev \
-      libldap-2.4-2 \
-      libltdl7 \
-      libmemcached11 \
-      libmcrypt4 \
-      libpng16-16 \
-      librdkafka1 \
-      libuuid1 \
-      libwebp6 \
-      libxslt1.1 \
-      libzip4 \
-      libyaml-0-2 \
-      locales \
-      make \
-      mariadb-client \
-      nano \
-      openssh-server \
-      openssh-client \
-      patch \
-      rsync \
-      sudo \
-      tidy \
-      tig \
-      tmux \
-      uw-mailutils \
-    ;\
+        apt-transport-https \
+        autoconf \
+        bzip2 \
+        cmake \
+        fcgiwrap \
+        findutils \
+        git \
+        gnupg \
+        imagemagick \
+        ldap-utils \
+        less \
+        libbz2-1.0 \
+        libc-client2007e \
+        libevent-2.0-5 \
+        libfreetype6 \
+        libgmp10 \
+        libicu57 \
+        #libjpeg62-turbo \
+        libldap-2.4-2 \
+        libltdl7 \
+        libmemcached11 \
+        libmcrypt4 \
+        libpng16-16 \
+        librdkafka1 \
+        libuuid1 \
+        #libwebp6 \
+        libxml2 \
+        #libxslt1.1 \
+        libyaml-0-2 \
+        libzip4 \
+        locales \
+        make \
+        mariadb-client \
+        nano \
+        openssh-server \
+        openssh-client \
+        patch \
+        pkg-config \
+        rsync \
+        sudo \
+        tidy \
+        tig \
+        tmux \
+        uw-mailutils; \
+    \
+    # Debian dev packages needed.
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        libbz2-dev \
+        libc-dev \
+        libc-client2007e-dev \
+        libevent-dev \
+        libfreetype6-dev \
+        libgmp-dev \
+        libicu-dev \
+        libjpeg62-turbo-dev \
+        libkrb5-dev \
+        libldap2-dev \
+        libmagickwand-dev \
+        libmagickcore-dev \
+        libmcrypt-dev \
+        librabbitmq-dev \
+        libtidy-dev \
+        libxml2-dev \
+        libwebp-dev \
+        libxslt1-dev \
+        libyaml-dev \
+        libzip-dev; \
+    \
+    docker-php-source extract; \
+    \
     docker-php-ext-install \
         bcmath \
         bz2 \
         calendar \
         exif \
         gmp \
-        imap \
         intl \
         ldap \
         mysqli \
@@ -120,14 +146,10 @@ RUN set -xe; \
     docker-php-ext-configure imap \
         --with-kerberos \
         --with-imap-ssl; \
-    docker-php-ext-install imap; \
+    docker-php-ext-install "-j${NPROC}" imap; \
     # mcrypt moved to pecl in PHP 7.2
-    if [[ "${PHP_VERSION:0:3}" == "7.2" ]]; then \
-        pecl install mcrypt-1.0.1; \
-        docker-php-ext-enable mcrypt; \
-    elif [[ "${PHP_VERSION:0:3}" == "7.1" ]]; then \
-        docker-php-ext-install mcrypt; \
-    fi; \
+    pecl install mcrypt-1.0.2; \
+    docker-php-ext-enable mcrypt; \
     \
     pecl install \
         amqp-1.9.4 \
@@ -142,7 +164,7 @@ RUN set -xe; \
         mongodb-1.5.3 \
         oauth-2.0.3 \
         rdkafka-3.1.0 \
-        redis-4.2.0 \
+        #redis-4.2.0 \
         uuid-1.0.4 \
         xdebug-2.7.1 \
         yaml-2.0.4; \
@@ -163,12 +185,13 @@ RUN set -xe; \
         rdkafka \
         uuid \
         xdebug \
-        yaml; \
-    \
-    # Microsoft SQL Server Prerequisites
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-       && curl https://packages.microsoft.com/config/debian/9/prod.list \
-           > /etc/apt/sources.list.d/mssql-release.list;
+        yaml;
+
+    # # Microsoft SQL Server Prerequisites
+    # curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    #    && curl https://packages.microsoft.com/config/debian/9/prod.list \
+    #        > /etc/apt/sources.list.d/mssql-release.list \
+    # ;
     # apt-get update; \
     # apt-get install -y --no-install-recommends \
     #   unixodbc-dev \
@@ -178,6 +201,11 @@ RUN set -xe; \
     # docker-php-ext-install mbstring pdo pdo_mysql soap; \
     # pecl install sqlsrv pdo_sqlsrv xdebug; \
     # docker-php-ext-enable sqlsrv pdo_sqlsrv xdebug;
+    # /
+    # apt-get clean; \
+    # rm -rf \
+    #     /var/lib/apt/lists/* \
+    #     /tmp/*;
 
 USER wodby
 
