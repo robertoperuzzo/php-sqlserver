@@ -57,17 +57,12 @@ RUN set -xe; \
         libfreetype6 \
         libgmp10 \
         libicu57 \
-        #libjpeg62-turbo \
         libldap-2.4-2 \
         libltdl7 \
         libmemcached11 \
         libmcrypt4 \
         libpng16-16 \
-        #librdkafka1 \
-        #libuuid1 \
-        #libwebp6 \
         libxml2 \
-        #libxslt1.1 \
         libyaml-0-2 \
         libzip4 \
         locales \
@@ -184,7 +179,6 @@ RUN set -xe; \
         memcached \
         mongodb \
         oauth \
-        #redis \
         rdkafka \
         uuid \
         xdebug \
@@ -235,7 +229,7 @@ WORKDIR ${APP_ROOT}
 EXPOSE 9000
 
 COPY docker-entrypoint.sh /
-#COPY ./bin /usr/local/bin/
+COPY ./bin /usr/local/bin/
 
-#ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 #CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]

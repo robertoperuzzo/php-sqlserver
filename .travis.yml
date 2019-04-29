@@ -1,0 +1,29 @@
+language: bash
+
+services:
+  - docker
+
+env:
+  global:
+  - PHP73=7.3.4
+  matrix:
+  - PHP_VER="${PHP73}" TAGS=7.3,7,latest
+  - PHP_VER="${PHP73}" PHP_DEV=1 TAGS=7.3-dev,7-dev,dev
+  - PHP_VER="${PHP73}" PHP_DEV=1 WODBY_USER_ID=501 WODBY_GROUP_ID=20 TAGS=7.3-dev-macos,7-dev-macos,dev-macos
+
+script:
+- set -e
+#- cd "${PHP_VER:0:1}" || cd "${PHP_VER:0:3}"
+- make check-configs
+- travis_retry make
+- make test
+
+after_success:
+- . "${TRAVIS_BUILD_DIR}/release.sh"
+
+notifications:
+  email:
+    recipients:
+    - travisci@robertoperuzzo.it
+    on_success: never
+    on_failure: always
