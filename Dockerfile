@@ -309,5 +309,5 @@ EXPOSE 9000
 COPY docker-entrypoint.sh /
 #COPY ./bin /usr/local/bin/
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+#ENTRYPOINT ["/docker-entrypoint.sh"]
 #CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
