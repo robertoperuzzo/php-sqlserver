@@ -48,6 +48,7 @@ RUN set -xe; \
         findutils \
         git \
         gnupg \
+        gosu \
         imagemagick \
         ldap-utils \
         less \
