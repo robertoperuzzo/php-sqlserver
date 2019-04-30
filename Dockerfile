@@ -9,9 +9,9 @@ ARG WODBY_USER_ID=1000
 ARG WODBY_GROUP_ID=1000
 
 ENV PHP_DEV="${PHP_DEV}" \
-    PHP_DEBUG="${PHP_DEBUG}"
-    # \
-    # LD_PRELOAD="/usr/lib/preloadable_libiconv.so php"
+    PHP_DEBUG="${PHP_DEBUG}" \
+    \
+    LD_PRELOAD="/usr/lib/preloadable_libiconv.so php"
 
 ENV APP_ROOT="/var/www/html" \
     CONF_DIR="/var/www/conf" \
@@ -308,7 +308,7 @@ WORKDIR ${APP_ROOT}
 EXPOSE 9000
 
 COPY docker-entrypoint.sh /
-#COPY ./bin /usr/local/bin/
+COPY ./bin /usr/local/bin/
 
-#ENTRYPOINT ["/docker-entrypoint.sh"]
-#CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
