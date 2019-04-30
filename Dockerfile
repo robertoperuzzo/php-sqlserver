@@ -48,6 +48,7 @@ RUN set -xe; \
         findutils \
         git \
         gnupg \
+        gosu \
         imagemagick \
         ldap-utils \
         less \
@@ -307,7 +308,8 @@ WORKDIR ${APP_ROOT}
 EXPOSE 9000
 
 COPY docker-entrypoint.sh /
-#COPY ./bin /usr/local/bin/
+COPY ./bin /usr/local/bin/
 
-#ENTRYPOINT ["/docker-entrypoint.sh"]
-#CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
+# CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
+CMD ["sudo", "-E", "php-fpm"]
