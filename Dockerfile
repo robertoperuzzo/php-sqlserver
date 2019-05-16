@@ -25,7 +25,6 @@ ENV PATH="${PATH}:/home/wodby/.composer/vendor/bin:${APP_ROOT}/vendor/bin:${APP_
     GIT_USER_NAME="wodby"
 
 RUN set -xe; \
-    \
     # Delete existing user/group if uid/gid occupied.
     existing_group=$(getent group "${WODBY_GROUP_ID}" | cut -d: -f1); \
     if [[ -n "${existing_group}" ]]; then delgroup "${existing_group}"; fi; \
@@ -153,6 +152,15 @@ RUN set -xe; \
     # mcrypt moved to pecl in PHP 7.2
     pecl install mcrypt-1.0.2; \
     docker-php-ext-enable mcrypt; \
+    \
+    # NewRelic extension and agent.
+    echo 'deb http://apt.newrelic.com/debian/ newrelic non-free' | tee /etc/apt/sources.list.d/newrelic.list; \
+    wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add - ; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        newrelic-php5; \
+    sudo newrelic-install install; \
+    rm /usr/local/etc/php/conf.d/newrelic.ini; \
     \
     pecl install \
         amqp-1.9.4 \
