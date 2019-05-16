@@ -311,5 +311,7 @@ COPY docker-entrypoint.sh /
 COPY ./bin /usr/local/bin/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-# CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
-CMD ["sudo", "-E", "php-fpm"]
+CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
+
+# Keep a container running on Kubernetes.
+#CMD ["bash", "-c", "tail -f /dev/null"]
