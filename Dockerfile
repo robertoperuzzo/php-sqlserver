@@ -53,6 +53,7 @@ RUN set -xe; \
         ldap-utils \
         less \
         libbz2-1.0 \
+        libc6 \
         libc-client2007e \
         libevent-2.0-5 \
         libfreetype6 \
@@ -75,6 +76,7 @@ RUN set -xe; \
         patch \
         pkg-config \
         rsync \
+        sendmail \
         sudo \
         tidy \
         tig \
@@ -307,11 +309,10 @@ USER wodby
 WORKDIR ${APP_ROOT}
 EXPOSE 9000
 
+COPY templates /etc/gotpl/
 COPY docker-entrypoint.sh /
 COPY ./bin /usr/local/bin/
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
-
-# Keep a container running on Kubernetes.
-#CMD ["bash", "-c", "tail -f /dev/null"]
+#CMD ["sudo", "-E", "LD_PRELOAD=/usr/lib/preloadable_libiconv.so", "php-fpm"]
+CMD ["sudo", "-E", "php-fpm"]
