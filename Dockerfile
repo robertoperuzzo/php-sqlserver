@@ -75,7 +75,6 @@ RUN set -xe; \
         patch \
         pkg-config \
         rsync \
-        sendmail \
         sudo \
         tidy \
         tig \
@@ -161,6 +160,12 @@ RUN set -xe; \
         newrelic-php5; \
     sudo newrelic-install install; \
     rm /usr/local/etc/php/conf.d/newrelic.ini; \
+    \
+    # Sendmail
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        sendmail; \
+    yes | sudo sendmailconfig; \
     \
     pecl install \
         amqp-1.9.4 \
@@ -250,6 +255,11 @@ RUN set -xe; \
         fi; \
     } | tee /etc/sudoers.d/wodby; \
     \
+    # Create the PrivSep empty dir if necessary
+    if [ ! -d /var/run/sshd ]; then \
+       sudo mkdir /var/run/sshd; \
+       sudo chmod 0755 /var/run/sshd; \
+    fi; \
     #echo "TLS_CACERTDIR /etc/ssl/certs/" >> /etc/openldap/ldap.conf; \
     \
     install -o wodby -g wodby -d \
