@@ -53,7 +53,7 @@ init_sshd() {
 # @deprecated will be removed in favor of bind mounts (config maps).
 init_crond() {
     if [[ -n "${CRONTAB}" ]]; then
-        _gotpl "crontab.tmpl" "/etc/crontabs/www-data"
+        _gotpl "crontab.tmpl" "/etc/cron.d/www-data"
     fi
 }
 

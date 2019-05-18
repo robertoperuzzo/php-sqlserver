@@ -43,6 +43,7 @@ RUN set -xe; \
         autoconf \
         bzip2 \
         cmake \
+        cron \
         fcgiwrap \
         findutils \
         git \
@@ -251,7 +252,7 @@ RUN set -xe; \
             echo -n '/usr/local/bin/migrate, ' ; \
             echo -n '/usr/local/sbin/php-fpm, ' ; \
             echo -n '/usr/sbin/sshd, ' ; \
-            echo '/usr/sbin/crond' ; \
+            echo '/etc/init.d/cron' ; \
         fi; \
     } | tee /etc/sudoers.d/wodby; \
     \
@@ -286,9 +287,9 @@ RUN set -xe; \
     \
     # rm /etc/crontabs/root; \
     # deprecated: remove in favor of bind mounts.
-    # touch /etc/crontabs/www-data; \
-    # chown root:www-data /etc/crontabs/www-data; \
-    # chmod 660 /etc/crontabs/www-data; \
+    touch /etc/cron.d/www-data; \
+    chown root:www-data /etc/cron.d/www-data; \
+    chmod 660 /etc/cron.d/www-data; \
     \
     # Microsoft SQL Server Prerequisites
     curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
