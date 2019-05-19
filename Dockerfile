@@ -56,6 +56,7 @@ RUN set -xe; \
         libc6 \
         libc-client2007e \
         libevent-2.0-5 \
+        libfcgi \
         libfreetype6 \
         libgmp10 \
         libicu57 \
