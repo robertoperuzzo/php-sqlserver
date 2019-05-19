@@ -252,7 +252,7 @@ RUN set -xe; \
             echo -n '/usr/local/bin/migrate, ' ; \
             echo -n '/usr/local/sbin/php-fpm, ' ; \
             echo -n '/usr/sbin/sshd, ' ; \
-            echo '/etc/init.d/cron' ; \
+            echo '/usr/sbin/cron' ; \
         fi; \
     } | tee /etc/sudoers.d/wodby; \
     \
