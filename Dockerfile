@@ -42,6 +42,7 @@ RUN set -xe; \
         apt-transport-https \
         autoconf \
         bzip2 \
+        ca-certificates \
         cmake \
         cron \
         fcgiwrap \
@@ -49,6 +50,7 @@ RUN set -xe; \
         git \
         gnupg \
         gosu \
+        gzip \
         imagemagick \
         ldap-utils \
         less \
@@ -79,9 +81,11 @@ RUN set -xe; \
         pkg-config \
         rsync \
         sudo \
+        tar \
         tidy \
         tig \
         tmux \
+        unzip \
         uw-mailutils \
         wget; \
     \
