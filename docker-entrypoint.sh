@@ -109,9 +109,9 @@ init_git
 process_templates
 disable_modules
 
-if [[ "${@:1:2}" == "sudo /usr/sbin/sshd" ]]; then
+if [[ "${@:1:3}" == "sudo -E /usr/sbin/sshd" ]]; then
     init_sshd
-elif [[ "${@:1:3}" == "sudo -E crond" ]]; then
+elif [[ "${@:1:3}" == "sudo -E /usr/sbin/cron" ]]; then
     init_crond
 fi
 
