@@ -214,11 +214,13 @@ RUN set -xe; \
     mv /usr/local/etc/php/conf.d/docker-php-ext-event.ini /usr/local/etc/php/conf.d/z-docker-php-ext-event.ini; \
     \
     # Blackfire extension (they have free tier).
-    mkdir -p /tmp/blackfire; \
-    version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;"); \
-    blackfire_url="https://blackfire.io/api/v1/releases/probe/php/alpine/amd64/${version}"; \
-    wget -qO- "${blackfire_url}" | tar xz --no-same-owner -C /tmp/blackfire; \
-    mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so; \
+    wget -q -O - https://packages.blackfire.io/gpg.key | sudo apt-key add - ; \
+    echo "deb http://packages.blackfire.io/debian any main" | sudo tee /etc/apt/sources.list.d/blackfire.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        blackfire-agent \
+        blackfire-php; \
+    docker-php-ext-enable blackfire; \
     \
     # Uploadprogress.
     mkdir -p /usr/src/php/ext/uploadprogress; \
